@@ -95,5 +95,16 @@
             <input type="submit" class="btn btn-primary" value="Agregar a la orden">
         </form>
     </div>
+<script>
+    // Verifica si la variable de sesión existe
+    var mensajeExito = "<?php echo isset($_SESSION['mensaje_exito']) ? $_SESSION['mensaje_exito'] : ''; ?>";
+    
+    // Si el mensaje de éxito existe, muestra un mensaje emergente o una notificación
+    if (mensajeExito !== "") {
+        alert(mensajeExito); // Muestra una alerta simple, puedes personalizar esto
+        <?php unset($_SESSION['mensaje_exito']); ?>; // Esta línea de PHP no es necesaria en JavaScript
+    }
+</script>
+
 </body>
 </html>

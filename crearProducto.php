@@ -30,9 +30,17 @@
     // Manejar la respuesta
     if ($response===false){
         header("Location:index.html");
+        exit;
     }
     // Cerrar la conexión cURL
     curl_close($ch);
+
+    session_start();
+    $_SESSION["mensaje_exito"] = "El producto se ha creado con éxito. ✅";
+
+
     header("Location:admin-prod.php");
+    exit;
+   
 
 ?>

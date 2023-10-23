@@ -82,6 +82,8 @@
                     <th scope="col">Email</th>
                     <th scope="col">Usuario</th>
                     <th scope="col">Password</th>
+                    <th scope="col">Rol</th>
+                    <th scope="col">Acciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -103,13 +105,19 @@
                         $nombre = $user->nombre;
                         $email = $user->email;
                         $usuario = $user->usuario;
-                        $password = $user->password;
-                ?>
+                        $password = $user->password;        
+                        $rol = $user->rol;          ?>
                 <tr>
                     <td><?php echo $nombre; ?></td>
                     <td><?php echo $email; ?></td>
                     <td><?php echo $usuario; ?></td>
                     <td><?php echo $password; ?></td>
+                    <td><?php echo $rol; ?></td>
+                    <td>
+                        <button class="btn btn-danger" onclick="eliminarUsuario('<?php echo $usuario; ?>')">🗑️</button>
+                        <button class="btn btn-primary modificar-usuario" onclick="modificarUsuario('<?php echo $usuario; ?>')">✏️</button>
+
+                    </td>
                 </tr>
                 <?php } ?>
             </tbody>
@@ -129,21 +137,27 @@
                     <form action="crearUsuario.php" method="post">
                         <div class="mb-3">
                             <label for="nombre" class="form-label">Nombre</label>
-                            <input type="text" name="nombre" class="form-control" id="nombre">
+                            <input type="text" name="nombre" class="form-control" id="nombre" required >
                         </div>
                         <div class="mb-3">
                             <label for="email" class="form-label">Correo electrónico</label>
-                            <input type="email" name="email" class="form-control" id="email">
+                            <input type="email" name="email" class="form-control" id="email" required>
                             <div class="form-text">Nunca compartiremos su correo electrónico con nadie más.</div>
                         </div>
                         <div class="mb-3">
                             <label for="usuario" class="form-label">Usuario</label>
-                            <input type="text" name="usuario" class="form-control" id="usuario">
+                            <input type="text" name="usuario" class="form-control" id="usuario" required>
                         </div>
                         <div class="mb-3">
                             <label for="password" class="form-label">Contraseña</label>
-                            <input type="password" name="password" class="form-control" id="password">
+                            <input type="password" name="password" class="form-control" id="password" required>
                         </div>
+                        <label for="password"  name="password" class="form-label">Rol</label>
+                        <select class="form-select"  name="rol" aria-label="Default select example" required>
+                        <option selected>Selecciona un rol</option>
+                        <option value="cliente">cliente</option>
+                        <option value="vendedor">vendedor</option>
+                        </select>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
@@ -153,5 +167,43 @@
             </div>
         </div>
     </div>
+
+
+
+
+    <script>
+    // Verifica si la variable de sesión existe
+    var mensajeExito = "<?php echo isset($_SESSION['mensaje_exito']) ? $_SESSION['mensaje_exito'] : ''; ?>";
+    
+    // Si el mensaje de éxito existe, muestra un mensaje emergente o una notificación
+    if (mensajeExito !== "") {
+        alert(mensajeExito); // Muestra una alerta simple, puedes personalizar esto
+        <?php unset($_SESSION['mensaje_exito']); ?>;
+   }
+</script>
+
+<script>
+    function eliminarUsuario(usuario) {
+        
+        if (confirm("¿Estás seguro de que deseas eliminar este usuario?")) {
+            // Realiza una solicitud para eliminar al usuario
+            var url = 'eliminarUsuario.php?usuario=' + usuario;
+            fetch(url)
+                .then(response => {
+                    console.log(response)
+                    if (!response.ok) {
+                        throw new Error('Error en la solicitud.');
+                    }
+                    location.reload();
+                    alert("✅🗑️ Se ha eliminado de manera exitosa el usuario" ); 
+                    
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+    }
+</script>
+
 </body>
 </html>

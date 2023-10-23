@@ -3,6 +3,7 @@
     $email=$_POST["email"];
     $usuario=$_POST["usuario"];
     $pass=$_POST["password"];
+    $rol=$_POST["rol"];
 
     // URL de la solicitud POST
     $url = 'http://localhost:3001/usuarios';
@@ -13,6 +14,7 @@
         'email' => $email,
         'usuario' => $usuario,
         'password' => $pass,
+        'rol' => $rol,
     );
     $json_data = json_encode($data);
 
@@ -32,9 +34,14 @@
     // Manejar la respuesta
     if ($response===false){
         header("Location:index.html");
+        exit;
     }
     // Cerrar la conexión cURL
     curl_close($ch);
+    session_start();
+    $_SESSION["mensaje_exito"] = "El usuario se ha creado con éxito. ✅ " ;
+
     header("Location:admin.php");
+    exit;
 
 ?>
