@@ -82,6 +82,7 @@
                     <th scope="col">Nombre</th>
                     <th scope="col">Precio</th>
                     <th scope="col">Inventario</th>
+                    <th scope="col">Acciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -112,6 +113,9 @@
                     <td><?php echo $nombre; ?></td>
                     <td><?php echo $precio; ?></td>
                     <td><?php echo $inventario; ?></td>
+                    <td>
+                        <button class="btn btn-danger" onclick="eliminarProducto('<?php echo $id; ?>')">🗑️</button>
+                    </td>
                 </tr>
                 <?php 
                     }
@@ -133,15 +137,15 @@
                     <form action="crearProducto.php" method="post">
                         <div class="mb-3">
                             <label for="nombre" class="form-label">Nombre</label>
-                            <input type="text" name="nombre" class="form-control" id="nombre">
+                            <input type="text" name="nombre" class="form-control" id="nombre" required>
                         </div>
                         <div class="mb-3">
                             <label for="precio" class="form-label">Precio</label>
-                            <input type="text" name="precio" class="form-control" id="precio">
+                            <input type="text" name="precio" class="form-control" id="precio" required >
                         </div>
                         <div class="mb-3">
                             <label for="inventario" class="form-label">Inventario</label>
-                            <input type="text" name="inventario" class="form-control" id="inventario">
+                            <input type="text" name="inventario" class="form-control" id="inventario" required>
                         </div>
                 </div>
                 <div class="modal-footer">
@@ -152,5 +156,42 @@
             </div>
         </div>
     </div>
+
+    <!-- Agrega este bloque de código JavaScript justo antes del cierre del cuerpo </body> -->
+<script>
+    // Verifica si la variable de sesión existe
+    var mensajeExito = "<?php echo isset($_SESSION['mensaje_exito']) ? $_SESSION['mensaje_exito'] : ''; ?>";
+    
+    // Si el mensaje de éxito existe, muestra un mensaje emergente o una notificación
+    if (mensajeExito !== "") {
+        alert(mensajeExito); // Muestra una alerta simple, puedes personalizar esto
+        <?php unset($_SESSION['mensaje_exito']); ?>;
+   }
+</script>
+
+<script>
+    function eliminarProducto(productoId) {
+        
+        if (confirm("¿Estás seguro de que deseas eliminar este Producto")) {
+            // Realiza una solicitud para eliminar al usuario
+            var url = 'eliminarProducto.php?id=' + productoId;
+            fetch(url)
+                .then(response => {
+                    console.log(response)
+                    if (!response.ok) {
+                        throw new Error('Error en la solicitud.');
+                    }
+                    location.reload();
+                    alert("✅🗑️ Se ha eliminado de manera exitosa el usuario" ); 
+                    
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+    }
+</script>
+
 </body>
+
 </html>

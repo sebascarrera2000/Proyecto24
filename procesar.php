@@ -38,11 +38,23 @@ $response = curl_exec($ch);
 // Manejar la respuesta
 if ($response===false){
     header("Location:index.html");
+    exit;
 }
 // Cerrar la conexión cURL
 curl_close($ch);
 
-echo "la orden ha sido creada";
+
+$mensajeExito = "Su orden se ha creado con éxito. ✅ Resumen de compra:";
+
+foreach ($items as $item) {
+    $mensajeExito .= "Id producto :  " . $item["id"] . " , Cantidad: " . $item["cantidad"] . "";
+}
+
+// Establecer el mensaje de éxito en la variable de sesión
+session_start();
+$_SESSION["mensaje_exito"] = $mensajeExito;
+
 header("Location:usuario.php");
+exit;
 
 ?>
